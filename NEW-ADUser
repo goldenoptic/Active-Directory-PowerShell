@@ -1,0 +1,43 @@
+<# Script for Account creation for New-ADusers By Pheonixeye0 on Reddit modified for
+ by Miquel Taylor Use on my network
+
+.SYSNOPSIS 
+To Create  New AD Accounts using Import-Csv and New-ADuser and put extra information in the Telephone Notes area tab
+.DESCRIPTION
+To use Import-Csv with New-ADuser to create accounts and move them to the
+correct OU and populate user attributes using a CSV  and printing to the screen which user accounts are created to include Smartcard login required
+
+#>
+$ADusers = Import-Csv  'C:\Users\miguel.taylor\Desktop\Create
+New-Aduser.csv'            
+foreach ($user in $ADusers)            
+{             $firstname = $user.firstname            
+ $lastname = $user.lastname            
+ $initials = $user.initials 
+$displayname = $user.displayname         
+$office= $user.office  
+$officephone= $user.officephone
+$title= $user.title
+$department= $user.department
+$username= $user.username
+ $description = $user.description            
+    $OU = $User.OU
+$date = $user.date
+$streetaddress= $user.streetaddress
+$logonname = $user.logonname
+$streetaddress = $user.streetaddress 
+$pobox = $user.pobox
+$notes = $user.notes
+
+
+    New-ADUser -Name "$displayname" -SamAccountName $username -GivenName
+$firstname -Surname $lastname -Initials $initials -DisplayName $displayname -Description $Description -Title $title -Office $office -OfficePhone
+$officephone -Department $department -StreetAddress $streetaddress -POBox
+$pobox -City "Raccoon City" -PostalCode 41557 -State NC -Country US -Company Umbrella -SmartcardLogonRequired:$true -UserPrincipalName $username@mil -Path
+$OU -PasswordNeverExpires:$false -AccountExpirationdate $date 
+
+ Set-ADUser  $username -Replace @{info = $notes}
+
+Write-Host "$username was successfully created." -ForegroundColor Green
+
+}
