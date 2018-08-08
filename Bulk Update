@@ -1,0 +1,17 @@
+<# Bulk Update PowerSehll Script by Miguel Taylor 
+
+.SYSNOPSIS
+This Script is for users to update multiple user accounts using Set-Aduser and Import-CSV Depending on what Attributes you need. The examples below are from my jobs Active Directory needs for existing accounts
+
+.DESCRIPTION
+Using Import-CSV with Set-ADuser the script will read through the headers in the CSV to update the information in a users Active Directory account
+#>
+Import-Module ActiveDirectory
+$Adusers = Import-Csv C:\Users\miguel.taylor\Desktop\adtest.csv
+  Foreach ($user in $ADusers) {
+Set-ADUser -Identity $user.samaccountname  -Office $user.office -Title
+$user.title -DisplayName $user.displayname -OfficePhone $user.officephone
+-Description $user.description -StreetAddress $user.StreetAddress
+-Department $user.Department -State NC -PostalCode 41557 -Company Umbrella -City
+"Raccoon City"
+}
